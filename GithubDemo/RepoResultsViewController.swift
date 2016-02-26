@@ -11,7 +11,7 @@ import MBProgressHUD
 import AFNetworking
 
 // Main ViewController
-class RepoResultsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class RepoResultsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SettingsPresentingViewControllerDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     var searchBar: UISearchBar!
@@ -87,6 +87,16 @@ class RepoResultsViewController: UIViewController, UITableViewDelegate, UITableV
         return cell
     }
     
+    @IBAction func onSettingsClick(sender: AnyObject) {
+        performSegueWithIdentifier("settingsSegue", sender: self)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let navController = segue.destinationViewController as! UINavigationController
+        let vc = navController.topViewController as! SettingsViewController
+        vc.settings = searchSettings
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if let subRepo = repos {
@@ -94,6 +104,14 @@ class RepoResultsViewController: UIViewController, UITableViewDelegate, UITableV
         }else{
             return 0
         }
+    }
+    
+    func didSaveSettings(settings: GithubRepoSearchSettings) {
+        
+    }
+    
+    func didCancelSettings() {
+        
     }
 }
 
